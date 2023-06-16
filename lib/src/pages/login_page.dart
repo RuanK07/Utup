@@ -40,31 +40,76 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 15),
-                      decoration: BoxDecoration(
-                          color: secondaryBlue,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                                blurRadius: 10.0,
-                                offset: Offset(5, 1),
-                                spreadRadius: 0,
-                                color: Colors.black38)
-                          ]),
-                      child: TextFormField(
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          decoration: const InputDecoration(
-                              hintText: "email",
-                              hintStyle: TextStyle(color: Colors.grey),
-                              labelStyle: TextStyle(color: Colors.white),
-                              border: InputBorder.none)))
-                ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 80),
+                child: Column(
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 15),
+                        decoration: BoxDecoration(
+                            color: secondaryBlue,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                  blurRadius: 10.0,
+                                  offset: Offset(5, 1),
+                                  spreadRadius: 0,
+                                  color: Colors.black38)
+                            ]),
+                        child: TextFormField(
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                            decoration: const InputDecoration(
+                                hintText: "email",
+                                hintStyle: TextStyle(color: Colors.grey),
+                                labelStyle: TextStyle(color: Colors.white),
+                                border: InputBorder.none))),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 15),
+                        decoration: BoxDecoration(
+                            color: secondaryBlue,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                  blurRadius: 10.0,
+                                  offset: Offset(5, 1),
+                                  spreadRadius: 0,
+                                  color: Colors.black38)
+                            ]),
+                        child: TextFormField(
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                            decoration: const InputDecoration(
+                                hintText: "password",
+                                hintStyle: TextStyle(color: Colors.grey),
+                                labelStyle: TextStyle(color: Colors.white),
+                                border: InputBorder.none)))
+                  ],
+                ),
+              ),
+              Container(
+                height: 50,
+                width: double.infinity,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 187, 187,
+                          187), // Set the background color to white
+                    ),
+                    child: const Text("Login",
+                        style: TextStyle(
+                            color: primaryBlack,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16))),
               )
             ],
           ),
