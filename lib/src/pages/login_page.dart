@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 80),
+                padding: const EdgeInsets.only(bottom: 60, top: 10),
                 child: Column(
                   children: [
                     Container(
