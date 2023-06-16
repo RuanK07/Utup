@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seutup/src/pages/register_page.dart';
 import 'package:seutup/src/utils/colors.dart';
 
 class LoginPage extends StatefulWidget {
@@ -83,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Colors.black38)
                             ]),
                         child: TextFormField(
+                            obscureText: true,
                             style: const TextStyle(
                               color: Colors.white,
                             ),
@@ -94,22 +96,48 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              Container(
-                height: 50,
-                width: double.infinity,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(100)),
-                child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 187, 187,
-                          187), // Set the background color to white
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(214, 255, 255,
+                            255), // Set the background color to white
+                      ),
+                      child: const Text("Login",
+                          style: TextStyle(
+                              color: primaryBlack,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16))),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "don't have an account?",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegisterPage())),
+                    child: const Text(
+                      "Register here",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
-                    child: const Text("Login",
-                        style: TextStyle(
-                            color: primaryBlack,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16))),
+                  )
+                ],
               )
             ],
           ),
