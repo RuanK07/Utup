@@ -19,7 +19,7 @@ public class ChangePassword { // DTO que representa a mudança de senha do usuá
     private String password; // Password do usuário logado.
 
     @NotBlank // --> Campo obrigatorio!
-    @Size(min = 6, max = 18) // --> Validação do tamanho da senha
+    @Size(min = 8, max = 18) // --> Validação do tamanho da senha
     @JsonProperty(value = "newPassword")
     private String newPassword; // Nova senha.
 
