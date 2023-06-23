@@ -31,7 +31,7 @@ public class Profile {
     private final String id = UUID.randomUUID().toString();
 
     @Column(name = "PROFILE_PHOTO", unique = true)
-    private String profilePhoto;
+    private byte[] profilePhoto;
 
     @Column(name = "BIOGRAPHY", unique = true)
     private String biography;
