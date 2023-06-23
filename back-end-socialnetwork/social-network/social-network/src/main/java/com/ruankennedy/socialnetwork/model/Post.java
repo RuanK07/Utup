@@ -7,8 +7,8 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -36,10 +36,10 @@ public class Post {
 
     @Column(name = "SUBTITLE", nullable = false, unique = true)
     private String subtitle;
-
-    @Column(name = "PHOTO_ID", nullable = false)
-    @Getter(AccessLevel.NONE)
-    private String photoId;
+    
+    @ElementCollection
+    @Column(name = "POST_PHOTO",nullable = false, columnDefinition = "bytea")
+    private List<byte[]> postPhoto;
 
     @Column(name = "POSTED_MOMENT", nullable = false)
     @CreationTimestamp
@@ -52,10 +52,5 @@ public class Post {
     inverseJoinColumns = @JoinColumn(name = "comments_id"))
     private final List<Comment> comments = new ArrayList<>();
     
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "tb_posts_photos",
-    joinColumns = @JoinColumn(name = "posts_id"),
-    inverseJoinColumns = @JoinColumn(name = "photos_id"))
-    private final List<Photo> photos = new ArrayList<>();
 
 }
