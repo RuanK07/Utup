@@ -1,14 +1,19 @@
 package com.almadavic.securitystandard.controller;
 
 
+import com.almadavic.securitystandard.config.kafka.event.UserCreatedEvent;
+import com.almadavic.securitystandard.config.kafka.event.UserCreatedEventMapper;
 import com.almadavic.securitystandard.dto.request.RegisterUserDTO;
 import com.almadavic.securitystandard.dto.response.UserMonitoringDTO;
 import com.almadavic.securitystandard.service.serviceAction.UserService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +30,9 @@ import java.net.URI;
 @Primary // Essa vai ser a implementação a ser carregada caso tenha mais de 1.
 public class UserControllerImpl implements UserController { // Controller para o ADM controlar os usuários do sistema e para o Usuário se cadastrar, como um CRUD
 
+	@Autowired
+    private KafkaTemplate<String, UserCreatedEvent> kafkaTemplate;
+	
     private final UserService userService;  // Service onde terá a lógica relacionada ao usuário no sistema.
 
     @Override
@@ -33,6 +41,12 @@ public class UserControllerImpl implements UserController { // Controller para o
 
         UserMonitoringDTO userDTO = userService.register(registerData);
 
+        UserCreatedEventMapper mapper = new UserCreatedEventMapper();
+        
+        UserCreatedEvent event = mapper.mapToUserCreatedEvent(userDTO);
+
+		kafkaTemplate.send("user-created-topic", event);
+        
         URI uri = uriBuilder.path("/users/{id}").buildAndExpand(userDTO.getId()).toUri(); // Recurso novo criado no sistema baseado no novo usuário.
 
         String message = userDTO.getNickname() + ", your account was registered successfully!"; // Mensagem de sucesso após registro no sistema.
