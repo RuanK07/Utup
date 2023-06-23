@@ -32,7 +32,6 @@ public class User implements UserDetails {    // Classe  do banco -> User | Repr
     private String nickname; // Representa o nome do usuário.
 
     @Column(name = "EMAIL", nullable = false, unique = true)
-    @Getter(AccessLevel.NONE)
     // Colocando o AccessLevel.NONE para dizer que não precisa criar o getter automaticamente do Lombok, pois já temos o metodo get padrão do atributo por conta do implements UserDetails.
     private String email;     // Representa o e-mail do usuário.
 
