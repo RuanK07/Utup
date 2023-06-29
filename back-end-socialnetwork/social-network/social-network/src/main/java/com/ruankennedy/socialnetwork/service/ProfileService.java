@@ -19,9 +19,6 @@ public class ProfileService {
     }
 
     public Profile createProfile(Profile profile) {
-        // Adicione qualquer lógica adicional que você precisa para criar um perfil
-        // Por exemplo, você pode validar os dados do perfil antes de salvá-lo
-
         return profileRepository.save(profile);
     }
 
@@ -45,6 +42,24 @@ public class ProfileService {
         existingProfile.setBiography(updatedProfile.getBiography());
 
         return profileRepository.save(existingProfile);
+    }
+    
+    public Profile updateProfilePhoto(String profileId,byte[] profilePhoto) {
+        Profile profile = getProfileById(profileId);
+        if (profile != null) {
+            profile.setProfilePhoto(profilePhoto);
+            return profileRepository.save(profile);
+        }
+        return null;
+    }
+
+    public Profile updateProfileBiography(String profileId, String biography) {
+        Profile profile = getProfileById(profileId);
+        if (profile != null) {
+            profile.setBiography(biography);
+            return profileRepository.save(profile);
+        }
+        return null;
     }
 
     public boolean deleteProfile(String profileId) {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ruankennedy.socialnetwork.model.Post;
@@ -48,10 +49,20 @@ public class ProfileController {
         List<Profile> profiles = profileService.getAllProfiles();
         return ResponseEntity.ok(profiles);
     }
+    
+    @PutMapping("/{profileId}/photo")
+    public ResponseEntity<Profile> updateProfilePhoto(@PathVariable String profileId, @RequestParam byte[] profilePhoto) {
+        Profile profile = profileService.updateProfilePhoto(profileId, profilePhoto);
+        if (profile != null) {
+            return ResponseEntity.ok(profile);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-    @PutMapping("/{profileId}")
-    public ResponseEntity<Profile> updateProfile(@PathVariable String profileId, @RequestBody Profile updatedProfile) {
-        Profile profile = profileService.updateProfile(profileId, updatedProfile);
+    @PutMapping("/{profileId}/biography")
+    public ResponseEntity<Profile> updateProfileBiography(@PathVariable String profileId, @RequestParam String biography) {
+        Profile profile = profileService.updateProfileBiography(profileId, biography);
         if (profile != null) {
             return ResponseEntity.ok(profile);
         } else {
