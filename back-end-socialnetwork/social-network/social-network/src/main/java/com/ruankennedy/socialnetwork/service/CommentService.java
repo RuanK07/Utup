@@ -18,9 +18,6 @@ public class CommentService {
     }
 
     public Comment createComment(Comment comment) {
-        // Adicione qualquer lógica adicional que você precisa para criar um comentário
-        // Por exemplo, você pode validar os dados do comentário antes de salvá-lo
-
         return commentRepository.save(comment);
     }
 
@@ -34,7 +31,6 @@ public class CommentService {
     }
 
     public Comment updateComment(String commentId, String newComment) {
-        // Verifique se o comentário existe antes de atualizá-lo
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
         if (commentOptional.isEmpty()) {
             return null;
