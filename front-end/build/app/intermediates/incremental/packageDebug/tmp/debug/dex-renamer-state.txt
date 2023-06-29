@@ -1,4 +1,4 @@
-#Mon Jun 19 15:55:23 BRT 2023
-base.0=C\:\\Users\\ruank\\seutup\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+#Thu Jun 29 09:59:44 BRT 2023
+base.0=C\:\\Users\\ruank\\utup\\front-end\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
