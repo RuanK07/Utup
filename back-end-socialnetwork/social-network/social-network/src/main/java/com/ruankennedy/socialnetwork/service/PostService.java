@@ -30,7 +30,7 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Post updatePost(String postId, String newSubtitle) {
+    public Post updatePostSubtitle(String postId, String newSubtitle) {
         Optional<Post> existingPostOptional = postRepository.findById(postId);
         if (existingPostOptional.isEmpty()) {
             return null;

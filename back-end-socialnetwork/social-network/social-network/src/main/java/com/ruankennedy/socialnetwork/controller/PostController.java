@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ruankennedy.socialnetwork.model.Post;
@@ -48,11 +49,11 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
-    @PutMapping("/{postId}")
-    public ResponseEntity<Post> updatePost(@PathVariable String postId, @RequestBody String newSubtitle) {
-        Post updatedPost = postService.updatePost(postId, newSubtitle);
-        if (updatedPost != null) {
-            return ResponseEntity.ok(updatedPost);
+    @PutMapping("/{postId}/subtitle")
+    public ResponseEntity<Post> updatePostSubtitle(@PathVariable String postId, @RequestParam String subtitle) {
+        Post post = postService.updatePostSubtitle(postId, subtitle);
+        if (post != null) {
+            return ResponseEntity.ok(post);
         } else {
             return ResponseEntity.notFound().build();
         }
