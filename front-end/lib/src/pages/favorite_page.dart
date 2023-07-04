@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FavoritePage extends StatefulWidget {
-  const FavoritePage({super.key});
+  const FavoritePage({Key? key}) : super(key: key);
 
   @override
   State<FavoritePage> createState() => _FavoritePageState();
