@@ -10,7 +10,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +33,6 @@ public class Comment {
     
     @Column(name = "COMMENTED_MOMENT", nullable = false)
     @CreationTimestamp
-    @Setter(AccessLevel.NONE)
     private LocalDateTime commentedMoment;
     
     @ManyToOne
