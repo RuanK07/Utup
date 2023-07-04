@@ -33,7 +33,7 @@ public class StartProjectConfigurations implements CommandLineRunner {
     p1.setBiography("Profile 1");
 
     Profile p2 = new Profile();
-    p2.setProfilePhoto(new byte[0]);
+    p2.setProfilePhoto(new byte[1]);
     p2.setBiography("Profile 2");
 
     List<Profile> profiles = profileRepository.saveAll(Arrays.asList(p1, p2));
