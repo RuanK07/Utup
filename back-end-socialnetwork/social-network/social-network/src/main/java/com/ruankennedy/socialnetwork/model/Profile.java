@@ -28,7 +28,7 @@ public class Profile {
     @Id
     @EqualsAndHashCode.Include
     @Column(name = "ID", nullable = false, unique = true)
-    private final String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
 
     @Column(name = "PROFILE_PHOTO", unique = true)
     private byte[] profilePhoto;
@@ -48,6 +48,6 @@ public class Profile {
 	    joinColumns = @JoinColumn(name = "profiles_id", referencedColumnName = "id"),
 	    inverseJoinColumns = @JoinColumn(name = "friends_id", referencedColumnName = "id")
 	)
-	private List<Profile> friends;
+	private List<Profile> friends = new ArrayList<>();
 
 }

@@ -8,6 +8,6 @@ import com.ruankennedy.socialnetwork.model.Post;
 
 public interface PostRepository extends JpaRepository<Post, String>{
 	
-	Optional<Post> findBySubtilte(String subtilte);
+	Optional<Post> findBySubtitle(String subtitle);
 	
 }
