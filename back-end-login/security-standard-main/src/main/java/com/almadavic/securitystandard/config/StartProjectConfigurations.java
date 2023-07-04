@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 // Faz com que quando a classe for instanciada, os atributos vão ser passados no construtor automaticamente.
 @Configuration // Indica que é uma classe de configuração
-@Profile(value = {"test"}) // Define em quais ambientes (profiles) essa classe será "chamada"
+@Profile(value = {"dev"}) // Define em quais ambientes (profiles) essa classe será "chamada"
 public class StartProjectConfigurations implements CommandLineRunner { // Essa classe é uma clase separada de configuração, Ela serve para popular o banco de dados quando a aplicação sobe (NO CASO)!
 
     private final UserRepository userRepository; // Repositório da entidade Usuário
