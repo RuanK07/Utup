@@ -1,72 +1,211 @@
 package com.ruankennedy.socialnetwork.config;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.ruankennedy.socialnetwork.enumerated.RoleName;
 import com.ruankennedy.socialnetwork.model.Comment;
+import com.ruankennedy.socialnetwork.model.Friend;
 import com.ruankennedy.socialnetwork.model.Post;
 import com.ruankennedy.socialnetwork.model.Profile;
+import com.ruankennedy.socialnetwork.model.Role;
+import com.ruankennedy.socialnetwork.model.User;
 import com.ruankennedy.socialnetwork.repository.CommentRepository;
+import com.ruankennedy.socialnetwork.repository.FriendRepository;
 import com.ruankennedy.socialnetwork.repository.PostRepository;
 import com.ruankennedy.socialnetwork.repository.ProfileRepository;
+import com.ruankennedy.socialnetwork.repository.RoleRepository;
+import com.ruankennedy.socialnetwork.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
 public class StartProjectConfigurations implements CommandLineRunner {
-	
- private final ProfileRepository profileRepository;
 
- private final PostRepository postRepository;
- 
- private final CommentRepository commentRepository;
+    private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder encoder;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final FriendRepository friendRepository;
 
- @Override
- public void run(String... args) {
+    @Override
+    public void run(String... args) {
+        User u1 = User.builder()
+                .nickname("admin")
+                .email("admin@hotmail.com")
+                .password(encoder.encode("12345678"))
+                .build();
 
-    Profile p1 = new Profile();
-    p1.setProfilePhoto(new byte[0]);
-    p1.setBiography("Profile 1");
+        User u2 = User.builder()
+                .nickname("user1")
+                .email("user1@hotmail.com")
+                .password(encoder.encode("12345678"))
+                .build();
 
-    Profile p2 = new Profile();
-    p2.setProfilePhoto(new byte[1]);
-    p2.setBiography("Profile 2");
+        User u3 = User.builder()
+                .nickname("user2")
+                .email("user2@hotmail.com")
+                .password(encoder.encode("12345678"))
+                .build();
 
-    List<Profile> profiles = profileRepository.saveAll(Arrays.asList(p1, p2));
+        List<User> users = userRepository.saveAll(Arrays.asList(u1, u2, u3));
 
-    Post post1 = new Post();
-    post1.setSubtitle("Post 1");
+        Role r1 = Role.builder()
+                .name(RoleName.ROLE_ADMIN)
+                .build();
 
-    Post post2 = new Post();
-    post2.setSubtitle("Post 2");
+        Role r2 = Role.builder()
+                .name(RoleName.ROLE_USER)
+                .build();
 
-    List<Post> posts = postRepository.saveAll(Arrays.asList(post1, post2));
+        roleRepository.saveAll(Arrays.asList(r1, r2));
 
-    Comment comment1 = new Comment();
-    comment1.setComment("Comment 1");
-    comment1.setPost(post1);
+        users.get(0).addRole(r1);
+        users.get(1).addRole(r2);
+        users.get(2).addRole(r2);
+        
+        users = userRepository.saveAll(users);
 
-    Comment comment2 = new Comment();
-    comment2.setComment("Comment 2");
-    comment2.setPost(post2);
+        Profile p1 = Profile.builder()
+                .profilePhoto(getProfilePhoto("static/images/test.png"))
+                .biography("Biography do perfil 1")
+                .user(users.get(0))
+                .build();
 
-    List<Comment> comments = commentRepository.saveAll(Arrays.asList(comment1, comment2));
+        Profile p2 = Profile.builder()
+                .profilePhoto(getProfilePhoto("static/images/test.png"))
+                .biography("Biography do perfil 2")
+                .user(users.get(1))
+                .build();
 
-    p1.getPosts().addAll(posts);
-    p2.getPosts().add(posts.get(1));
+        Profile p3 = Profile.builder()
+                .profilePhoto(getProfilePhoto("static/images/test.png"))
+                .biography("Biography do perfil 3")
+                .user(users.get(2))
+                .build();
 
-    post1.getComments().add(comment1);
-    post2.getComments().add(comment2);
+        List<Profile> profiles = profileRepository.saveAll(Arrays.asList(p1, p2, p3));
 
-    profiles = profileRepository.saveAll(profiles);
-    posts = postRepository.saveAll(posts);
+        users.get(0).setProfile(p1);
+        users.get(1).setProfile(p2);
+        users.get(2).setProfile(p3);
 
-    System.out.println("Profiles: " + profiles);
-    System.out.println("Posts: " + posts);
-    System.out.println("Comments: " + comments);
- }
+        users = userRepository.saveAll(users);
+        
+        Post po1 = Post.builder()
+                .subtitle("Subtitle do post 1")
+                .postPhoto(getPostPhotos("static/images/setup.png", "static/images/setup2.png"))
+                .postedMoment(LocalDateTime.now())
+                .profile(profiles.get(0))
+                .build();
+
+        Post po2 = Post.builder()
+                .subtitle("Subtitle do post 2")
+                .postPhoto(getPostPhotos("static/images/setup2.png", "static/images/setup.png"))
+                .postedMoment(LocalDateTime.now())
+                .profile(profiles.get(1))
+                .build();
+
+        List<Post> posts = postRepository.saveAll(Arrays.asList(po1, po2));
+        
+        profiles.get(0).addPost(po1);
+        profiles.get(1).addPost(po2);
+        
+        profiles = profileRepository.saveAll(profiles);
+        posts = postRepository.saveAll(posts);
+
+        Comment c1 = Comment.builder()
+                .comment("comentario do usuario 1")
+                .commentedMoment(LocalDateTime.now())
+                .post(posts.get(0))
+                .user(users.get(0))
+                .build();
+
+        Comment c2 = Comment.builder()
+                .comment("comentario do usuario 2")
+                .commentedMoment(LocalDateTime.now())
+                .post(posts.get(1))
+                .user(users.get(1))
+                .build();
+
+        Comment c3 = Comment.builder()
+                .comment("comentario do usuario 3")
+                .commentedMoment(LocalDateTime.now())
+                .post(posts.get(1))
+                .user(users.get(2))
+                .build();
+        
+        List<Comment> comments = commentRepository.saveAll(Arrays.asList(c1, c2, c3));
+        
+        users.get(0).addComment(comments.get(0));
+        users.get(1).addComment(comments.get(1));
+        users.get(2).addComment(comments.get(2));
+        
+        comments = commentRepository.saveAll(comments);
+        users = userRepository.saveAll(users);
+
+        Friend f1 = Friend.builder()
+                .friendStart(LocalDateTime.now())
+                .profile(profiles.get(0))
+                .build();
+
+        Friend f2 = Friend.builder()
+                .friendStart(LocalDateTime.now())
+                .profile(profiles.get(1))
+                .build();
+
+        Friend f3 = Friend.builder()
+                .friendStart(LocalDateTime.now())
+                .profile(profiles.get(2))
+                .build();
+        
+        List<Friend> friends = friendRepository.saveAll(Arrays.asList(f1, f2, f3));
+        
+        profiles.get(0).addFriend(friends.get(0));
+        profiles.get(1).addFriend(friends.get(1));
+        profiles.get(2).addFriend(friends.get(2));
+        
+        friends = friendRepository.saveAll(friends);
+        profiles = profileRepository.saveAll(profiles);
+        
+    }
+
+    private byte[] getProfilePhoto(String filePath) {
+        try {
+            Resource resource = new ClassPathResource(filePath);
+            return Files.readAllBytes(resource.getFile().toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private List<byte[]> getPostPhotos(String... filePaths) {
+        List<byte[]> postList = new ArrayList<>();
+        try {
+            for (String filePath : filePaths) {
+                Resource resource = new ClassPathResource(filePath);
+                byte[] bytes = Files.readAllBytes(resource.getFile().toPath());
+                postList.add(bytes);
+            }
+            return postList;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
