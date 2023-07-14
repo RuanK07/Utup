@@ -5,9 +5,9 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,39 +19,29 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_comments")
+@Table(name = "tb_friends")
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Comment {
-
-	@Id
+public class Friend {
+    @Id
     @EqualsAndHashCode.Include
     @Column(name = "ID", nullable = false, unique = true)
-    private final String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
 
-    @Column(name = "COMMENT", nullable = false, unique = true)
-    private String comment;
-    
-    @Column(name = "COMMENTED_MOMENT", nullable = false)
+    @Column(name = "FRIEND_START", nullable = false)
     @CreationTimestamp
-    private LocalDateTime commentedMoment;
+    private LocalDateTime friendStart;
     
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-    
-    @ManyToOne
-    private Post post;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
     
     @Builder
-    public Comment(String comment, LocalDateTime commentedMoment, User user, Post post) {
+    public Friend(LocalDateTime friendStart, Profile profile) {
     	super();
-    	this.comment = comment;
-        this.commentedMoment = commentedMoment;
-        this.user = user;
-        this.post = post;
+    	this.friendStart = friendStart;
+        this.profile = profile;
     }
-    
 }

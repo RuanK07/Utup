@@ -7,13 +7,15 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,15 +36,31 @@ public class Post {
     @Column(name = "SUBTITLE", nullable = false, unique = true)
     private String subtitle;
     
-    @ElementCollection
-    @Column(name = "POST_PHOTO",nullable = false, columnDefinition = "bytea")
+    @Column(name = "POST_PHOTO",nullable = false, columnDefinition = "bytea[]")
     private List<byte[]> postPhoto;
 
     @Column(name = "POSTED_MOMENT", nullable = false)
     @CreationTimestamp
     private LocalDateTime postedMoment;
-
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    private final List<Comment> comments = new ArrayList<>();
     
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", nullable = false)
+    private Profile profile;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+    
+    @Builder
+	private Post(String subtitle, List<byte[]> postPhoto, LocalDateTime postedMoment, Profile profile) {
+		super();
+		this.subtitle = subtitle;
+		this.postPhoto = postPhoto;
+		this.postedMoment = postedMoment;
+		this.profile = profile;
+	}
+    
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setPost(this);
+    }
 }

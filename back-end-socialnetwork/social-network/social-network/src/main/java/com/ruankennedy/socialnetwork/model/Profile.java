@@ -4,19 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "tb_profiles")
@@ -25,16 +14,21 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Profile {
-    @Id
-    @EqualsAndHashCode.Include
+	
+	@Id    
+    @EqualsAndHashCode.Include 
     @Column(name = "ID", nullable = false, unique = true)
-    private String id = UUID.randomUUID().toString();
+    private final String id = UUID.randomUUID().toString();
 
-    @Column(name = "PROFILE_PHOTO", unique = true)
+    @Column(name = "PROFILE_PHOTO")
     private byte[] profilePhoto;
 
-    @Column(name = "BIOGRAPHY", unique = true)
+    @Column(name = "BIOGRAPHY")
     private String biography;
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "tb_profiles_posts",
@@ -42,12 +36,43 @@ public class Profile {
     inverseJoinColumns = @JoinColumn(name = "posts_id"))
     private final List<Post> posts = new ArrayList<>();
     
-    @ManyToMany(cascade = CascadeType.PERSIST)
-	@JoinTable(
-	    name = "profiles_friends",
-	    joinColumns = @JoinColumn(name = "profiles_id", referencedColumnName = "id"),
-	    inverseJoinColumns = @JoinColumn(name = "friends_id", referencedColumnName = "id")
-	)
-	private List<Profile> friends = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "tb_profiles_friends",
+    joinColumns = @JoinColumn(name = "profiles_id"),
+    inverseJoinColumns = @JoinColumn(name = "friends_id"))
+    private final List<Friend> friends = new ArrayList<>();
 
+    @Builder
+	private Profile(byte[] profilePhoto, String biography, User user) {
+		super();
+		this.profilePhoto = profilePhoto;
+		this.biography = biography;
+		this.user = user;
+    }
+    
+    public void addPost(Post post) {
+    	posts.add(post);
+        post.setProfile(this);
+    }
+
+    public void removePost(Post post) {
+    	posts.remove(post);
+        post.setProfile(null);
+    }
+    
+    public void addFriend(Friend friend) {
+    	friends.add(friend);
+        friend.setProfile(this);
+    }
+
+    public void removeFriend(Friend friend) {
+    	friends.remove(friend);
+        friend.setProfile(null);
+    }
+
+    public void addUser(User user) {
+    	this.user = user;
+    	user.setProfile(this);
+    }
+    
 }
