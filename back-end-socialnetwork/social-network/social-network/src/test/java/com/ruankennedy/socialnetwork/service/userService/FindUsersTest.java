@@ -14,33 +14,30 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ActiveProfiles;
 
-
-@ActiveProfiles(value = "test") // Quando o teste for rodado, ele será rodado em ambiente de teste.
 @SpringBootTest
-public class FindUsersTest { // Classe que testa o service associado com a funcionalidade de encontrar usuários no sistema.
+public class FindUsersTest {
 
     @Autowired
-    private UserService userService; // Usado para testar os métodos findById  e findAll.
+    private UserService userService;
 
     @Autowired
-    private UserRepository userRepository; // Usado para buscar um usuário do banco.
+    private UserRepository userRepository;
 
     @Test
-    @Transactional // Esse annotation foi utilizado pois estava tendo problemas relacionados ao proxy depois da atualização do Spring.
+    @Transactional 
     void findUsersParameterAdministrator() {
 
-        Pageable pageable = PageRequest.of(0, 10); // Páginação
+        Pageable pageable = PageRequest.of(0, 10);
 
-        Page<UserMonitoringDTO> usersDto = userService.findAll(pageable, "ADMIN"); // Quando é passado a paginação e o nome do role, o método deve retornar uma página
-                                                                                            // com os usuários que tenham essa role.
+        Page<UserMonitoringDTO> usersDto = userService.findAll(pageable, "ADMIN");
+
         boolean containsRoleUser = false;
 
         for (UserMonitoringDTO userDTO : usersDto) {
 
-            if (!userDTO.getRolesDTO().get(0).getRoleName().equals("ROLE_ADMIN")) {       // Lógica para verificar se o método não está retornando usuários com  uma role
-                containsRoleUser = true;                                                  // que não deveria.
+            if (!userDTO.getRolesDTO().get(0).getRoleName().equals("ROLE_ADMIN")) {
+                containsRoleUser = true;
             }
 
             Assertions.assertFalse(containsRoleUser);
@@ -50,7 +47,7 @@ public class FindUsersTest { // Classe que testa o service associado com a funci
     }
 
     @Test
-    @Transactional // Esse annotation foi utilizado pois estava tendo problemas relacionados ao proxy depois da atualização do Spring.
+    @Transactional
     void findUsersParameterUser() {
 
         Pageable pageable = PageRequest.of(0, 10);
@@ -75,14 +72,14 @@ public class FindUsersTest { // Classe que testa o service associado com a funci
     @Transactional
     void findById() {
 
-        User user = userRepository.findByEmail("admin@hotmail.com") // É encontrado um usuário no banco de dados pelo e-mail.
-                .orElseThrow(()-> new ResourceNotFoundException("The user wasn't found on database\"")); // Caso não tenha um usuário no banco com o e-mail informado,
-                                                                                                         // será lançada uma exception.
-        String id = user.getId(); // Id do usuário.
+        User user = userRepository.findByEmail("admin@hotmail.com")
+                .orElseThrow(()-> new ResourceNotFoundException("The user wasn't found on database\""));
+                                                                                                         
+        String id = user.getId();
 
-        UserMonitoringDTO userDTO = userService.findById(id); // Retorna um dto do usuário.
+        UserMonitoringDTO userDTO = userService.findById(id);
 
-        Assertions.assertEquals(id, userDTO.getId()); // O id do DTO tem que ser o mesmo do usuário no banco.
+        Assertions.assertEquals(id, userDTO.getId());
 
     }
 
