@@ -18,7 +18,7 @@ public class Profile {
 	@Id    
     @EqualsAndHashCode.Include 
     @Column(name = "ID", nullable = false, unique = true)
-    private final String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
 
     @Column(name = "PROFILE_PHOTO")
     private byte[] profilePhoto;
@@ -26,20 +26,14 @@ public class Profile {
     @Column(name = "BIOGRAPHY")
     private String biography;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "tb_profiles_posts",
-    joinColumns = @JoinColumn(name = "profiles_id"),
-    inverseJoinColumns = @JoinColumn(name = "posts_id"))
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
     private final List<Post> posts = new ArrayList<>();
     
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "tb_profiles_friends",
-    joinColumns = @JoinColumn(name = "profiles_id"),
-    inverseJoinColumns = @JoinColumn(name = "friends_id"))
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
     private final List<Friend> friends = new ArrayList<>();
 
     @Builder
@@ -73,6 +67,18 @@ public class Profile {
     public void addUser(User user) {
     	this.user = user;
     	user.setProfile(this);
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts.clear();
+        if (posts != null) {
+            this.posts.addAll(posts);
+            posts.forEach(post -> post.setProfile(this));
+        }
+    }
+    
+    public String getNickname() {
+        return user != null ? user.getNickname() : null;
     }
     
 }
