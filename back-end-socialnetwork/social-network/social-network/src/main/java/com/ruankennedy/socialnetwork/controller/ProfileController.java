@@ -1,106 +1,38 @@
 package com.ruankennedy.socialnetwork.controller;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.ruankennedy.socialnetwork.model.Post;
-import com.ruankennedy.socialnetwork.model.Profile;
-import com.ruankennedy.socialnetwork.service.ProfileService;
+import com.ruankennedy.socialnetwork.dto.request.ChangeBiography;
+import com.ruankennedy.socialnetwork.dto.request.ChangeProfilePhoto;
+import com.ruankennedy.socialnetwork.dto.response.ProfileDTO;
+import com.ruankennedy.socialnetwork.model.User;
 
-@RestController
-@RequestMapping("/profiles")
-public class ProfileController {
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-    private final ProfileService profileService;
+@Tag(name = "profiles", description = "Operations about profiles")
+public interface ProfileController {
 
-    public ProfileController(ProfileService profileService) {
-        this.profileService = profileService;
-    }
+    @Operation(summary = "Get a profile by user's id", security = {@SecurityRequirement(name = "bearer-key")})
+    @ApiResponse(responseCode = "200", description = "Profile found")
+    @ApiResponse(responseCode = "404", description = "Profile not found")
+    ResponseEntity<ProfileDTO> getProfileByUser(@AuthenticationPrincipal
+    	    @Parameter(hidden = true) User userLogged);
 
-    @PostMapping
-    public ResponseEntity<Profile> createProfile(@RequestBody Profile profile) {
-        Profile createdProfile = profileService.createProfile(profile);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProfile);
-    }
+    @Operation(summary = "Update profile photo", security = {@SecurityRequirement(name = "bearer-key")})
+    @ApiResponse(responseCode = "200", description = "Profile photo updated")
+    @ApiResponse(responseCode = "404", description = "Profile not found")
+    ResponseEntity<ProfileDTO> updateProfilePhoto(@RequestBody ChangeProfilePhoto request, @AuthenticationPrincipal
+    	    @Parameter(hidden = true) User userLogged);
 
-    @GetMapping("/{profileId}")
-    public ResponseEntity<Profile> getProfileById(@PathVariable String profileId) {
-        Profile profile = profileService.getProfileById(profileId);
-        if (profile != null) {
-            return ResponseEntity.ok(profile);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Profile>> getAllProfiles() {
-        List<Profile> profiles = profileService.getAllProfiles();
-        return ResponseEntity.ok(profiles);
-    }
-    
-    @PutMapping("/{profileId}/photo")
-    public ResponseEntity<Profile> updateProfilePhoto(@PathVariable String profileId, @RequestParam byte[] profilePhoto) {
-        Profile profile = profileService.updateProfilePhoto(profileId, profilePhoto);
-        if (profile != null) {
-            return ResponseEntity.ok(profile);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PutMapping("/{profileId}/biography")
-    public ResponseEntity<Profile> updateProfileBiography(@PathVariable String profileId, @RequestParam String biography) {
-        Profile profile = profileService.updateProfileBiography(profileId, biography);
-        if (profile != null) {
-            return ResponseEntity.ok(profile);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{profileId}")
-    public ResponseEntity<Void> deleteProfile(@PathVariable String profileId) {
-        boolean deleted = profileService.deleteProfile(profileId);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping("/{profileId}/posts")
-    public ResponseEntity<Void> addPostToProfile(@PathVariable String profileId, @RequestBody Post post) {
-        profileService.addPostToProfile(profileId, post);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @DeleteMapping("/{profileId}/posts")
-    public ResponseEntity<Void> removePostFromProfile(@PathVariable String profileId, @RequestBody Post post) {
-        profileService.removePostFromProfile(profileId, post);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/{profileId}/friends")
-    public ResponseEntity<Void> addFriendToProfile(@PathVariable String profileId, @RequestBody Profile friend) {
-        profileService.addFriendToProfile(profileId, friend);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @DeleteMapping("/{profileId}/friends")
-    public ResponseEntity<Void> removeFriendFromProfile(@PathVariable String profileId, @RequestBody Profile friend) {
-        profileService.removeFriendFromProfile(profileId, friend);
-        return ResponseEntity.noContent().build();
-    }
+    @Operation(summary = "Update profile biography", security = {@SecurityRequirement(name = "bearer-key")})
+    @ApiResponse(responseCode = "200", description = "Profile biography updated")
+    @ApiResponse(responseCode = "404", description = "Profile not found")
+    ResponseEntity<ProfileDTO> updateBiography(@RequestBody ChangeBiography request, @AuthenticationPrincipal
+    	    @Parameter(hidden = true) User userLogged);
 }
