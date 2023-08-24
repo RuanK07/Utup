@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @Id    
     @EqualsAndHashCode.Include 
     @Column(name = "ID", nullable = false, unique = true)
-    private final String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
     
     @Column(name = "USERNAME", nullable = false, unique = true)
     private String nickname; 
@@ -49,10 +49,11 @@ public class User implements UserDetails {
     @Getter(AccessLevel.NONE) 
     private final List<Role> roles = new ArrayList<>();
     
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "user")
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private Profile profile;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Comment> comments = new ArrayList<>();
 
     
@@ -76,7 +77,7 @@ public class User implements UserDetails {
         comments.add(comment);
         comment.setUser(this);
     }
-
+    
     public void removeComment(Comment comment) {
         comments.remove(comment);
         comment.setUser(null);
