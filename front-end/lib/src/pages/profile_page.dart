@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/cover_and_profile_widget.dart';
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -9,36 +11,30 @@ class ProfilePage extends StatelessWidget {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(top: 20.0, left: 15.0, right: 15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                CoverAndProfileWidget(size: MediaQuery.of(context).size),
+                SizedBox(height: 16),
                 Row(
                   children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage('assets/profile_image.jpg'),
-                    ),
                     SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'John Doe',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 123.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'John Doe',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Photographer | Traveler',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
+                          SizedBox(height: 8),
+                        ],
+                      ),
                     ),
                   ],
                 ),

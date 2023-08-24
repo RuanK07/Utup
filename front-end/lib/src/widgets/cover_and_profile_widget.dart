@@ -62,8 +62,7 @@ class CoverAndProfileWidget extends StatelessWidget {
   Future<String> fetchProfileImage() {
     // Lógica para buscar a imagem de perfil do usuário (pode ser uma chamada de API, acesso ao banco de dados, etc.)
     return Future.delayed(Duration(seconds: 2), () {
-      // Simulação de uma chamada assíncrona que retorna a URL da imagem
-      return 'https://localhost:8081/profiles/';
+      return 'https://localhost:8081/profiles/{profileId}/photo';
     });
   }
 }
