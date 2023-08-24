@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -34,6 +35,11 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 public class StartProjectConfigurations implements CommandLineRunner {
 
+	@Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
+	
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -42,24 +48,25 @@ public class StartProjectConfigurations implements CommandLineRunner {
     private final CommentRepository commentRepository;
     private final FriendRepository friendRepository;
 
+    
     @Override
     public void run(String... args) {
         User u1 = User.builder()
                 .nickname("admin")
                 .email("admin@hotmail.com")
-                .password(encoder.encode("12345678"))
+                .password(encoder.encode("123456"))
                 .build();
 
         User u2 = User.builder()
                 .nickname("user1")
                 .email("user1@hotmail.com")
-                .password(encoder.encode("12345678"))
+                .password(encoder.encode("123456"))
                 .build();
 
         User u3 = User.builder()
                 .nickname("user2")
                 .email("user2@hotmail.com")
-                .password(encoder.encode("12345678"))
+                .password(encoder.encode("123456"))
                 .build();
 
         List<User> users = userRepository.saveAll(Arrays.asList(u1, u2, u3));
@@ -100,10 +107,10 @@ public class StartProjectConfigurations implements CommandLineRunner {
 
         List<Profile> profiles = profileRepository.saveAll(Arrays.asList(p1, p2, p3));
 
-        users.get(0).setProfile(p1);
-        users.get(1).setProfile(p2);
-        users.get(2).setProfile(p3);
-
+        users.get(0).addRole(r1);
+        users.get(1).addRole(r2);
+        users.get(2).addRole(r2);
+        
         users = userRepository.saveAll(users);
         
         Post po1 = Post.builder()
@@ -126,7 +133,6 @@ public class StartProjectConfigurations implements CommandLineRunner {
         profiles.get(1).addPost(po2);
         
         profiles = profileRepository.saveAll(profiles);
-        posts = postRepository.saveAll(posts);
 
         Comment c1 = Comment.builder()
                 .comment("comentario do usuario 1")
@@ -149,35 +155,36 @@ public class StartProjectConfigurations implements CommandLineRunner {
                 .user(users.get(2))
                 .build();
         
-        List<Comment> comments = commentRepository.saveAll(Arrays.asList(c1, c2, c3));
+        commentRepository.saveAll(Arrays.asList(c1, c2, c3));
         
-        users.get(0).addComment(comments.get(0));
-        users.get(1).addComment(comments.get(1));
-        users.get(2).addComment(comments.get(2));
+        users.get(0).addComment(c1);
+        users.get(1).addComment(c2);
+        users.get(2).addComment(c3);
+
+        c1.setPost(posts.get(0));
+        c2.setPost(posts.get(1));
+        c3.setPost(posts.get(1));
         
-        comments = commentRepository.saveAll(comments);
         users = userRepository.saveAll(users);
+        posts = postRepository.saveAll(posts);
+        commentRepository.saveAll(Arrays.asList(c1, c2, c3));
 
         Friend f1 = Friend.builder()
                 .friendStart(LocalDateTime.now())
                 .profile(profiles.get(0))
-                .build();
-
-        Friend f2 = Friend.builder()
-                .friendStart(LocalDateTime.now())
-                .profile(profiles.get(1))
+                .targetProfile(profiles.get(1))
                 .build();
 
         Friend f3 = Friend.builder()
                 .friendStart(LocalDateTime.now())
                 .profile(profiles.get(2))
+                .targetProfile(profiles.get(1))
                 .build();
         
-        List<Friend> friends = friendRepository.saveAll(Arrays.asList(f1, f2, f3));
+        List<Friend> friends = friendRepository.saveAll(Arrays.asList(f1, f3));
         
-        profiles.get(0).addFriend(friends.get(0));
-        profiles.get(1).addFriend(friends.get(1));
-        profiles.get(2).addFriend(friends.get(2));
+        profiles.get(0).addFriend(f1);
+        profiles.get(1).addFriend(f3);
         
         friends = friendRepository.saveAll(friends);
         profiles = profileRepository.saveAll(profiles);
