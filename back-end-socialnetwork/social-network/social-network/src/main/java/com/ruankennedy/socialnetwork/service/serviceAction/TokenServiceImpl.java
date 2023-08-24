@@ -43,7 +43,7 @@ public class TokenServiceImpl implements TokenService {
 
         try {
             return JWT.create()
-                    .withIssuer("SecurityStandard API")
+                    .withIssuer("SocialNetworkAPI")
                     .withSubject(userDTO.getId())
                     .withClaim("email", userDTO.getEmail())
                     .withClaim("roles", roles)
@@ -58,7 +58,7 @@ public class TokenServiceImpl implements TokenService {
     public String getSubject(String token) {
         try {
             return JWT.require(secretAlgorithm())
-                    .withIssuer("SecurityStandard API")
+                    .withIssuer("SocialNetworkAPI")
                     .build()
                     .verify(token)
                     .getSubject();
