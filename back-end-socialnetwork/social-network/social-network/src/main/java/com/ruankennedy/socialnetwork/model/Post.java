@@ -33,7 +33,7 @@ public class Post {
     @Column(name = "ID", nullable = false, unique = true)
     private String id = UUID.randomUUID().toString();
 
-    @Column(name = "SUBTITLE", nullable = false, unique = true)
+    @Column(name = "SUBTITLE", nullable = false)
     private String subtitle;
     
     @Column(name = "POST_PHOTO",nullable = false, columnDefinition = "bytea[]")
@@ -44,10 +44,10 @@ public class Post {
     private LocalDateTime postedMoment;
     
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", nullable = false)
+    @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
     
     @Builder
@@ -59,8 +59,5 @@ public class Post {
 		this.profile = profile;
 	}
     
-    public void addComment(Comment comment) {
-        comments.add(comment);
-        comment.setPost(this);
-    }
+    
 }
