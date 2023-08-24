@@ -34,14 +34,18 @@ public class Friend {
     @CreationTimestamp
     private LocalDateTime friendStart;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
     
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "target_profile_id", nullable = false)
+    private Profile targetProfile;
+    
     @Builder
-    public Friend(LocalDateTime friendStart, Profile profile) {
-    	super();
-    	this.friendStart = friendStart;
+    public Friend(LocalDateTime friendStart, Profile profile, Profile targetProfile) {
+        this.friendStart = friendStart;
         this.profile = profile;
+        this.targetProfile = targetProfile;
     }
 }
