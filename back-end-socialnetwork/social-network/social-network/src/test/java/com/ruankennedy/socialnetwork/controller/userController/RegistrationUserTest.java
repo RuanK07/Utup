@@ -10,7 +10,6 @@ import com.ruankennedy.socialnetwork.controller.ClassTestParent;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,17 +17,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@ActiveProfiles(value = "test") // Quando o teste for rodado, ele será rodado em ambiente de teste.
-@SpringBootTest // Indica que estamos fazendo testes com spring, onde a aplicação sobe.
-@AutoConfigureMockMvc // Utilizaremos mocks nos testes
-public class RegistrationUserTest extends ClassTestParent {  // Classe testa a funcionalidade de cadastrar um usuário no banco.
+@SpringBootTest
+@AutoConfigureMockMvc
+public class RegistrationUserTest extends ClassTestParent {
 
     private final String path = "/users/register";
 
     @Test
-    void nicknameAlreadyRegistered() throws Exception { // Método deve falhar pois já existe um usuário no banco com esse nickname.
+    void nicknameAlreadyRegistered() throws Exception { 
 
-        RegisterUserDTO registerDTO = new RegisterUserDTO("admin", "joaomaia@gmail.com", "123456", "123456"); // DTO para se registrar no sistema.
+        RegisterUserDTO registerDTO = new RegisterUserDTO("admin", "joaomaia@gmail.com", "123456", "123456"); 
 
         mockMvc.perform(post(path)
                         .contentType("application/json")
@@ -41,22 +39,22 @@ public class RegistrationUserTest extends ClassTestParent {  // Classe testa a f
     }
 
     @Test
-    void emailAlreadyRegistered() throws Exception {  // Método deve falhar pois já existe um usuário no banco com esse e-mail.
+    void emailAlreadyRegistered() throws Exception {
 
-        RegisterUserDTO registerDTO = new RegisterUserDTO("almadaV", "admin@hotmail.com", "123456", "123456"); // DTO para se registrar no sistema.
+        RegisterUserDTO registerDTO = new RegisterUserDTO("ruank07", "admin@hotmail.com", "123456", "123456");
 
-        mockMvc.perform(post(path) // Caminho da requisição.
-                        .contentType("application/json") // // O tipo do conteúdo
-                        .content(objectMapper.writeValueAsString(registerDTO))) // O conteúdo que será enviado.
-                .andExpect(status().is(internalServerError)) // Erro que deve ocorrer.
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof EmailAlreadyRegisteredException)) // Tipo de exception esperada.
-                .andExpect(result -> assertEquals("This e-mail: " + registerDTO.getEmail() + " already exists in the system" // Mensagem da exception esperada.
+        mockMvc.perform(post(path)
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(registerDTO)))
+                .andExpect(status().is(internalServerError))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof EmailAlreadyRegisteredException))
+                .andExpect(result -> assertEquals("This e-mail: " + registerDTO.getEmail() + " already exists in the system"
                         , result.getResolvedException().getMessage()));
 
     }
 
     @Test
-    void passwordsDontMatch() throws Exception {  // Método deve falhar pois o usuário está passando 2 senhas que não correspondem.
+    void passwordsDontMatch() throws Exception {
 
         RegisterUserDTO registerDTO = new RegisterUserDTO("Larissa", "larissa@hotmail.com", "123456", "1234567");
 
@@ -71,7 +69,7 @@ public class RegistrationUserTest extends ClassTestParent {  // Classe testa a f
     }
 
     @Test
-    void registeredSuccess() throws Exception { // O usuário deve conseguir se registrar no sistema com sucesso.
+    void registeredSuccess() throws Exception {
 
         RegisterUserDTO registerDTO = new RegisterUserDTO("Davi", "davi@hotmail.com", "123456", "123456");
 

@@ -12,44 +12,41 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@ActiveProfiles(value = "test") // Quando o teste for rodado, ele será rodado em ambiente de teste.
-@SpringBootTest // Indica que estamos fazendo testes com spring, onde a aplicação sobe.
-@AutoConfigureMockMvc // Utilizaremos mocks nos testes
-public class FindUsersTest extends ClassTestParent { // Classe testa a busca de usuário no sistema.
-
+@SpringBootTest
+@AutoConfigureMockMvc
+public class FindUsersTest extends ClassTestParent {
+	
     private final String path = "/users";
 
     @Autowired
-    private UserRepository userRepository; // Utilizado para buscar um usuário do banco ( foi utilizado no caso do findById) onde precisava saber o Id do usuário, por causa do UUID.
+    private UserRepository userRepository;
 
     @Test
-    void findUsersInvalidParameter() throws Exception { // Método deve falhar, pois foi passado um nome de uma role inválida.
+    void findUsersInvalidParameter() throws Exception {
 
-        Login loginData = new Login("admin@hotmail.com", "123456"); // DTO de Login que passamos na requisição para logar.
+        Login loginData = new Login("admin@hotmail.com", "123456"); 
 
-        String token = authenticate(loginData); // Loga o usuário no sistema através do DTO e retorna o token pora ser enviado nas próxima requisição.
+        String token = authenticate(loginData);
 
         String param = "INVALIDO"; // paramêtro
 
-        mockMvc.perform(get(path + "?role={param}", param) // Caminho da requisição.
-                        .header("Authorization", token)) // O token que será enviado na requisição.
-                .andExpect(status().is(badRequest)) // Erro que deve ocorrer.
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof InvalidParamException)) // Tipo de exception esperada.
-                .andExpect(result -> assertEquals("This parameter (role) : { " + param + " } is invalid" // Mensagem da exception esperada.
+        mockMvc.perform(get(path + "?role={param}", param) 
+                        .header("Authorization", token))
+                .andExpect(status().is(badRequest))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof InvalidParamException)) 
+                .andExpect(result -> assertEquals("This parameter (role) : { " + param + " } is invalid" 
                         , result.getResolvedException().getMessage()));
 
     }
 
     @Test
-    void findUsersParameterUser() throws Exception { // Método deve retornar uma página de usuários do sistema que tem a role USER
+    void findUsersParameterUser() throws Exception {
 
         Login loginData = new Login("admin@hotmail.com", "123456");
 
@@ -64,7 +61,7 @@ public class FindUsersTest extends ClassTestParent { // Classe testa a busca de 
     }
 
     @Test
-    void findUsersParameterAdministrator() throws Exception { // Método deve retornar uma página de usuários do sistema que tem a role ADMINISTRATOR
+    void findUsersParameterAdministrator() throws Exception {
 
         Login loginData = new Login("admin@hotmail.com", "123456");
 
@@ -79,7 +76,7 @@ public class FindUsersTest extends ClassTestParent { // Classe testa a busca de 
     }
 
     @Test
-    void findUsersNoParameter() throws Exception { // Método deve retornar uma página de usuários do sistema sem passar parametro na URI.
+    void findUsersNoParameter() throws Exception {
 
         Login loginData = new Login("admin@hotmail.com", "123456");
 
@@ -92,7 +89,7 @@ public class FindUsersTest extends ClassTestParent { // Classe testa a busca de 
     }
 
     @Test
-    void findUserByIdNotFound() throws Exception { // Método deve falhar, pois passei um id cujo não existe nenhum usuário no banco cadastrado com o mesmo.
+    void findUserByIdNotFound() throws Exception {
 
         Login loginData = new Login("admin@hotmail.com", "123456");
 
@@ -110,7 +107,7 @@ public class FindUsersTest extends ClassTestParent { // Classe testa a busca de 
     }
 
     @Test
-    void findUserByIdSuccess() throws Exception { // Método retorna um usuario especifico do banco.
+    void findUserByIdSuccess() throws Exception {
 
         Login loginData = new Login("admin@hotmail.com", "123456");
 
