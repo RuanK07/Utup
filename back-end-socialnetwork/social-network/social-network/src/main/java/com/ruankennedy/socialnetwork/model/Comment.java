@@ -8,9 +8,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -29,20 +31,21 @@ public class Comment {
 	@Id
     @EqualsAndHashCode.Include
     @Column(name = "ID", nullable = false, unique = true)
-    private final String id = UUID.randomUUID().toString();
+    private String id = UUID.randomUUID().toString();
 
-    @Column(name = "COMMENT", nullable = false, unique = true)
+    @Column(name = "COMMENT", nullable = false)
     private String comment;
     
     @Column(name = "COMMENTED_MOMENT", nullable = false)
     @CreationTimestamp
     private LocalDateTime commentedMoment;
     
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id")
     private Post post;
     
     @Builder
@@ -54,4 +57,15 @@ public class Comment {
         this.post = post;
     }
     
+    @Builder
+    public Comment(String comment, LocalDateTime commentedMoment) {
+        this.comment = comment;
+        this.commentedMoment = commentedMoment;
+    }
+    
+    @PreRemove
+    private void removeCommentFromUser() {
+        user.getComments().remove(this);
+        user = null;
+    }
 }
