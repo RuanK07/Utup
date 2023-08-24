@@ -10,7 +10,6 @@ import com.ruankennedy.socialnetwork.controller.ClassTestParent;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,35 +18,35 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@ActiveProfiles(value = "test") // Quando o teste for rodado, ele será rodado em ambiente de teste.
-@SpringBootTest // Indica que estamos fazendo testes com spring, onde a aplicação sobe.
-@AutoConfigureMockMvc // Utilizaremos mocks nos testes
-public class ChangePasswordTest extends ClassTestParent {  // Classe testa a funcionalidade de alterar uma senha no sistema.
+
+@SpringBootTest 
+@AutoConfigureMockMvc
+public class ChangePasswordTest extends ClassTestParent {
 
     private final String path = "/userarea/changepassword";
 
     @Test
-    void passwordDoenstMatchDataBasePassword() throws Exception { // Alteração de senha deve falhar pois o usuário está passando sua senha incorreta.
+    void passwordDoenstMatchDataBasePassword() throws Exception {
 
-        Login loginData = new Login("user2@hotmail.com", "123456"); // DTO de Login que passamos na requisição para logar.
+        Login loginData = new Login("user2@hotmail.com", "123456"); 
 
-        String token = authenticate(loginData); // Loga o usuário no sistema através do DTO e retorna o token pora ser enviado nas próxima requisição.
+        String token = authenticate(loginData); 
 
-        ChangePassword changePasswordDTO = new ChangePassword("12345678", "13553353553"); // DTO para alterar a senha
+        ChangePassword changePasswordDTO = new ChangePassword("12345678", "13553353553");
 
-        mockMvc.perform(put(path) // Caminho da requisição
-                        .contentType("application/json") // O tipo do conteúdo
-                        .header("Authorization", token) // O token que será enviado na requisição.
-                        .content(objectMapper.writeValueAsString(changePasswordDTO))) // O conteúdo que será enviado.
-                .andExpect(status().is(badRequest)) // Erro que deve ocorrer.
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof DatabaseException)) // Tipo de exception esperada.
-                .andExpect(result -> assertEquals("The password is not correct (not match)" // Mensagem da exception esperada.
+        mockMvc.perform(put(path) 
+                        .contentType("application/json") 
+                        .header("Authorization", token)
+                        .content(objectMapper.writeValueAsString(changePasswordDTO))) 
+                .andExpect(status().is(badRequest)) 
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof DatabaseException))
+                .andExpect(result -> assertEquals("The password is not correct (not match)"
                         , result.getResolvedException().getMessage()));
 
     }
 
     @Test
-    void passwordIsEqualTheLastOne() throws Exception { // Alteração da senha deve falhar pois o usuário está passando o valor da nova senha igual da antiga.
+    void passwordIsEqualTheLastOne() throws Exception {
 
         Login loginData = new Login("admin@hotmail.com", "123456");
 
@@ -67,7 +66,7 @@ public class ChangePasswordTest extends ClassTestParent {  // Classe testa a fun
     }
 
     @Test
-    void changePasswordSuccessFlow() throws Exception { // Alteração de senha deve ser feita com sucesso.
+    void changePasswordSuccessFlow() throws Exception {
 
         Login firstLogin = new Login("user1@hotmail.com", "123456");
 
@@ -79,19 +78,19 @@ public class ChangePasswordTest extends ClassTestParent {  // Classe testa a fun
 
         ChangePassword changePasswordDTO = new ChangePassword(oldPassword, newPassword);
 
-        passwordChanged(changePasswordDTO, token); // Senha alterada de oldPassword para newPassword;
+        passwordChanged(changePasswordDTO, token); 
 
         Login loginDataAttempt1 = new Login("user1@hotmail.com", oldPassword);
 
-        enterSystemFail(loginDataAttempt1); // Usuário tenta logar com a senha incorreta ( Senha antiga)
+        enterSystemFail(loginDataAttempt1); 
 
         Login loginDataAttempt2 = new Login("user1@hotmail.com", newPassword);
 
-        enterSystemSuccess(loginDataAttempt2); // Usuário tenta logar com a senha correta ( Nova senha)
+        enterSystemSuccess(loginDataAttempt2); 
 
     }
 
-    private void passwordChanged(ChangePassword changePasswordDTO, String token) throws Exception { // Mudança de senha.
+    private void passwordChanged(ChangePassword changePasswordDTO, String token) throws Exception {
 
         mockMvc.perform(put(path)
                         .contentType("application/json")
@@ -102,7 +101,7 @@ public class ChangePasswordTest extends ClassTestParent {  // Classe testa a fun
                         result.getResponse().getContentAsString()));
     }
 
-    private void enterSystemFail(Login loginDataAttempt1) throws Exception { // Usuário tenta logar com a senha antiga.
+    private void enterSystemFail(Login loginDataAttempt1) throws Exception { 
 
         mockMvc.perform(post("/auth")
                         .contentType("application/json")
@@ -113,7 +112,7 @@ public class ChangePasswordTest extends ClassTestParent {  // Classe testa a fun
                         , result.getResolvedException().getMessage()));
     }
 
-    private void enterSystemSuccess(Login loginDataAttempt2) throws Exception { // Usuário tenta logar com a nova senha.
+    private void enterSystemSuccess(Login loginDataAttempt2) throws Exception {
 
         mockMvc.perform(post("/auth")
                         .contentType("application/json")
