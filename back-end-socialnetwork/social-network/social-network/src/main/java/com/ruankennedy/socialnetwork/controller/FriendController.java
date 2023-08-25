@@ -15,7 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "comment", description = "Operations about comments")
+@Tag(name = "friend", description = "Operations about friends")
 public interface FriendController {
     
 	@Operation(summary = "Create friend", security = {@SecurityRequirement(name = "bearer-key")})
