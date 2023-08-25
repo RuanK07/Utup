@@ -30,8 +30,8 @@ public class ProfileControllerImpl implements ProfileController {
 
     @Override
     @GetMapping(value = "/userprofile")
-    public ResponseEntity<ProfileDTO> getProfileByUser(User userLogged) {
-        Profile profile = profileService.getProfileByUser(userLogged);
+    public ResponseEntity<ProfileDTO> getProfileByUserNickname(String nickname, User userLogged) {
+        Profile profile = profileService.getProfileByUserNickname(nickname);
         ProfileDTO response = modelMapper.map(profile, ProfileDTO.class);
         return ResponseEntity.ok().body(response);
     }

@@ -8,7 +8,7 @@ import com.ruankennedy.socialnetwork.model.User;
 public interface ProfileService {
 	Profile createProfile(Profile profile);
 	Profile getProfileById(String profileId);
-    Profile getProfileByUser(User userLogged);
+    Profile getProfileByUserNickname(String nickname);
     Profile updateProfilePhoto(User userLogged, ChangeProfilePhoto request);
     Profile updateBiography(User userLogged, ChangeBiography request);
 }

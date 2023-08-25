@@ -30,21 +30,21 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile getProfileByUser(User userLogged) {
-        Profile profile = profileRepository.findByUserId(userLogged.getId());
+    public Profile getProfileByUserNickname(String nickname) {
+        Profile profile = profileRepository.findByUserNickname(nickname);
         return profile;
     }
 
     @Override
     public Profile updateProfilePhoto(User userLogged, ChangeProfilePhoto request) {
-        Profile profile = getProfileByUser(userLogged);
+        Profile profile = profileRepository.findByUserId(userLogged.getId());
         profile.setProfilePhoto(request.getProfilePhoto());
         return profileRepository.save(profile);
     }
 
     @Override
     public Profile updateBiography(User userLogged, ChangeBiography request) {
-        Profile profile = getProfileByUser(userLogged);
+        Profile profile = profileRepository.findByUserId(userLogged.getId());
         profile.setBiography(request.getBiography());
         return profileRepository.save(profile);
     }

@@ -3,6 +3,7 @@ package com.ruankennedy.socialnetwork.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ruankennedy.socialnetwork.dto.request.ChangeBiography;
 import com.ruankennedy.socialnetwork.dto.request.ChangeProfilePhoto;
@@ -18,10 +19,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "profiles", description = "Operations about profiles")
 public interface ProfileController {
 
-    @Operation(summary = "Get a profile by user's id", security = {@SecurityRequirement(name = "bearer-key")})
+    @Operation(summary = "Get a profile by user's nickname", security = {@SecurityRequirement(name = "bearer-key")})
     @ApiResponse(responseCode = "200", description = "Profile found")
     @ApiResponse(responseCode = "404", description = "Profile not found")
-    ResponseEntity<ProfileDTO> getProfileByUser(@AuthenticationPrincipal
+    ResponseEntity<ProfileDTO> getProfileByUserNickname(@RequestParam String nickname, @AuthenticationPrincipal
     	    @Parameter(hidden = true) User userLogged);
 
     @Operation(summary = "Update profile photo", security = {@SecurityRequirement(name = "bearer-key")})

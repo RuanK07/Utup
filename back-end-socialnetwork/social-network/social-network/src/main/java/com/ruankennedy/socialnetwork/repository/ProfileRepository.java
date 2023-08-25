@@ -8,5 +8,8 @@ import com.ruankennedy.socialnetwork.model.Profile;
 public interface ProfileRepository extends JpaRepository<Profile, String>{
 	
 	Profile findByUserId(String id);
+	
 	List<Profile> findByUserIdIn(List<String> userIds);
+	
+	Profile findByUserNickname(String nickname);
 }
