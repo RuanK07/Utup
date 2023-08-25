@@ -24,7 +24,7 @@ public interface FriendController {
 	ResponseEntity<FriendDTO> createFriend(@AuthenticationPrincipal
     	    @Parameter(hidden = true) User userLogged, @RequestParam String nickname);
 	
-	@Operation(summary = "Get a friend list by profile ID", security = {@SecurityRequirement(name = "bearer-key")})
+	@Operation(summary = "Get a friend list by User nickname", security = {@SecurityRequirement(name = "bearer-key")})
     @ApiResponse(responseCode = "200", description = "Friends found")
     @ApiResponse(responseCode = "404", description = "Friends not found")
 	ResponseEntity<List<FriendDTO>> getFriendsByUserNickname(@RequestParam String nickname, @AuthenticationPrincipal

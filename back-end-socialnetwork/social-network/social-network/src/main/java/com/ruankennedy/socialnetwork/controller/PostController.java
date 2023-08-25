@@ -27,7 +27,7 @@ public interface PostController {
     ResponseEntity<PostDTO> createPost(@RequestBody CreatePostDTO request, @AuthenticationPrincipal
     	    @Parameter(hidden = true) User userLogged);
 	
-	@Operation(summary = "Get a post list by profile ID", security = {@SecurityRequirement(name = "bearer-key")})
+	@Operation(summary = "Get a post list by user's nickname", security = {@SecurityRequirement(name = "bearer-key")})
     @ApiResponse(responseCode = "200", description = "Posts found")
     @ApiResponse(responseCode = "404", description = "Posts not found")
     ResponseEntity<List<PostDTO>> getPostsByUserNickname(@RequestParam String nickname, @AuthenticationPrincipal
@@ -43,4 +43,5 @@ public interface PostController {
     @ApiResponse(responseCode = "200", description = "Posts found")
     @ApiResponse(responseCode = "404", description = "Posts not found")
     ResponseEntity<List<PostDTO>> getPostsBySubtitle(String subtitle);
+    
 }
