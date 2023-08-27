@@ -140,105 +140,23 @@ A estrutura do projeto segue uma organização lógica que separa as diferentes 
   |Endpoint | Tipo|  Descrição|
   |--|--|--|
   | /auth | POST| Authenticate in the system |
-  | /friends/create/friend | POST| Create friend |
-  | /friends/allfriends | GET| Get a friend list by User nickname |
-
-
-
-profiles
-Operations about profiles
-
-
-
-PUT
-/profile/photo
-Update profile photo
-
-
-PUT
-/profile/biography
-Update profile biography
-
-
-GET
-/profile/userprofile
-Get a profile by user's nickname
-
-post
-Operations about posts
-
-
-
-PUT
-/posts/subtitle
-Update post subtitle
-
-
-POST
-/posts/create/post
-Create post
-
-
-GET
-/posts
-Get a post list by subtitle
-
-
-GET
-/posts/profile
-Get a post list by user's nickname
-
-comment
-Operations about comments
-
-
-
-PUT
-/comments/edit
-Update Comment by its ID
-
-
-POST
-/comments/create/comment
-Create comment
-
-
-GET
-/comments/post
-Get a comment list by post ID
-
-user
-Operations about user
-
-
-
-POST
-/users/register
-Sign up in the System.
-
-GET
-/users
-Find all the users from the system.
-
-
-GET
-/users/{id}
-Find an user from the system by id.
-
-user-area
-The user area, where the own user performs operations
-
-
-
-PUT
-/userarea/changepassword
-Change the account password
-
-
-GET
-/userarea/myprofile
-Access the logged user informations
-
+  | /users/register | POST | Sign up in the System |
+  | /users | GET | Find all The Users from the System |
+  | /users/{id} | GET | Find an User from the System by ID |
+  | /friends/create/friend | POST| Create Friend |
+  | /friends/allfriends | GET| Get a Friend list by User Nickname |
+  | /profile/photo | PUT | Update Profile Photo |
+  | /profile/biography | PUT | Update Profile Biography |
+  | /profile/userprofile | GET | Get a Profile by User's Nickname |
+  | /posts/subtitle | PUT | Update Post Subtitle |
+  | /posts/create/post | POST | Create Post |
+  | /posts | GET | Get a Post list by Subtitle |
+  | /posts/profile | GET | Get a Post list by User's Nickname |
+  | /comments/edit | PUT | Update Comment by its ID |
+  | /comments/create/comment | POST | Create Comment |
+  | /comments/post | GET | Get a Comment list by Post ID |
+  | /userarea/changepassword | PUT | Change the Acccount Password |
+  | /userarea/myprofile | GET | Access the Logged User Informations |
 
 </td></tr> </table>
 
