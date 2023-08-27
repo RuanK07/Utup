@@ -3,11 +3,9 @@
 )
 * [1. Configuração](https://github.com/RuanK07/Utup#1-Configuração)
 * [2. Estrutura do Projeto](https://github.com/RuanK07/Utup#2-Estrutura-do-Projeto)
-* [3. Arquitetura](https://github.com/RuanK07/Utup#3-Arquitetura)
-* [4. Endpoints](https://github.com/RuanK07/Utup#4-Endpoints)
-* [5. Modelos de Dados](https://github.com/RuanK07/Utup#5-Modelos-de-Dados)
-* [6. Testes](https://github.com/RuanK07/Utup#6-Testes)
-* [7. Implantação](https://github.com/RuanK07/Utup#7-Implantação)
+* [3. Endpoints](https://github.com/RuanK07/Utup#3-Endpoints)
+* [4. Testes](https://github.com/RuanK07/Utup#5-Testes)
+* [6. Implantação](https://github.com/RuanK07/Utup#6-Implantação)
 
 -------------------------------
 
@@ -131,7 +129,7 @@ A estrutura do projeto segue uma organização lógica que separa as diferentes 
 <br></br>
 
 
-# 4. Endpoints
+# 3. Endpoints
 
 <table>
   <tr><th> Requisições </th></tr>
@@ -163,15 +161,18 @@ A estrutura do projeto segue uma organização lógica que separa as diferentes 
 <br></br>
 
 
-# 5. Modelos de Dados
+# 5. Schema do Banco de Dados
+
+<img>
+  <p align="center"> 
+    <b>Diagrama de Entidade Relacional</b> 
+  </p> 
+</img>
+
+![image]()
 
 
-
-# 6. Testes
-
-
-
-# 7. Implantação
+# 6. Implantação
 
 
 
