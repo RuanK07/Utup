@@ -5,7 +5,7 @@
 * [2. Estrutura do Projeto](https://github.com/RuanK07/Utup#2-Estrutura-do-Projeto)
 * [3. Endpoints](https://github.com/RuanK07/Utup#3-Endpoints)
 * [4. Schema do Banco de Dados](https://github.com/RuanK07/Utup#4-Schema-do-Banco-de-Dados)
-* [5. Implantação](https://github.com/RuanK07/Utup#5-Implantação)
+* [5. Informacoes adicionais](https://github.com/RuanK07/Utup#5-Informacoes-adicionais)
 
 -------------------------------
 
