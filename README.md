@@ -4,8 +4,8 @@
 * [1. Configuração](https://github.com/RuanK07/Utup#1-Configuração)
 * [2. Estrutura do Projeto](https://github.com/RuanK07/Utup#2-Estrutura-do-Projeto)
 * [3. Endpoints](https://github.com/RuanK07/Utup#3-Endpoints)
-* [4. Testes](https://github.com/RuanK07/Utup#5-Testes)
-* [6. Implantação](https://github.com/RuanK07/Utup#6-Implantação)
+* [4. Schema do Banco de Dados](https://github.com/RuanK07/Utup#4-Schema-do-Banco-de-Dados)
+* [5. Implantação](https://github.com/RuanK07/Utup#5-Implantação)
 
 -------------------------------
 
@@ -161,7 +161,7 @@ A estrutura do projeto segue uma organização lógica que separa as diferentes 
 <br></br>
 
 
-# 5. Schema do Banco de Dados
+# 4. Schema do Banco de Dados
 
 <img>
   <p align="center"> 
@@ -169,10 +169,19 @@ A estrutura do projeto segue uma organização lógica que separa as diferentes 
   </p> 
 </img>
 
-![image]()
+<img src="back-end-socialnetwork/social-network/social-network/src/main/resources/static/images/der.png">
 
+<br></br>
 
-# 6. Implantação
+# 5. Informacoes adicionais:
+
+Sub-pastas do projeto = 122 pastas
+
+Classes do projeto = 117 classes
+
+Linhas de codigo do projeto = 5271 linhas
+
+Link index do Swagger: /utup-api/swagger-ui/index.html
 
 
 
